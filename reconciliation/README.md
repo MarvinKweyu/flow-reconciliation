@@ -34,9 +34,6 @@ cd reconciliation
 # Install dependencies
 pip install -e .
 
-# Run migrations (if using DB for caching)
-alembic upgrade head
-
 # Start server
 python -m uvicorn app.main:app --host 0.0.0.0 --port 8000
 ```
@@ -92,10 +89,4 @@ This service does **NOT**:
 ```bash
 # Run tests
 pytest
-
-# Code style
-# (configure ruff or black as needed)
 ```
-<!-- 
-[tool.setuptools]
-packages = ["app"] -->

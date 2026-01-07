@@ -17,8 +17,8 @@ By default, communication between these services happens through the docker netw
 REST API docs can be accessed via: [localhost:3000/api/docs](localhost:3000/api/docs)
 
 This project comprises of two services:
- - core(nestjs)
- - reconciliation(Python)
+ - core(nestjs): `http://localhost:3000`
+ - reconciliation(Python): `http://localhost:8001/graphql`
 
 
 The `core service` handles data persistence while the `reconciliation service` handles reconciliation accordingly. More information can be found under each service's readme file.

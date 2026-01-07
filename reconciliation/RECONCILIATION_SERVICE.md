@@ -2,27 +2,6 @@
 
 The reconciliation service is a separate Python application that provides GraphQL API for matching invoices to bank transactions using deterministic heuristics.
 
-## Running Both Services
-
-### Development
-
-```bash
-cd flow-project
-
-# Start all services (NestJS API + Reconciliation service)
-docker-compose -f docker-compose.local.yml up --build
-```
-
-Endpoints:
-- NestJS REST/GraphQL: `http://localhost:3000`
-- Reconciliation GraphQL: `http://localhost:8000/graphql`
-
-### Production
-
-```bash
-docker-compose -f docker-compose.production.yml up --build -d
-```
-
 ## Reconciliation Service Architecture
 
 **Location:** `reconciliation/`
@@ -103,7 +82,6 @@ query {
 
 ## Deployment Notes
 
-- Services run on separate ports (3000 for NestJS, 8000 for Python)
+- Services run on separate ports.
 - Both connected to same Docker network (`flow`)
 - Reconciliation service is stateless (no DB required)
-- Suitable for horizontal scaling (stateless GraphQL service)
