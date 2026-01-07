@@ -1,6 +1,6 @@
-## Description
+# flow-reconciliation
 
-An invoice application.
+A flow reconciliation project 
 
 ## Project setup
 The recommended way to run the project is via docker.
@@ -21,20 +21,15 @@ This project comprises of two services:
 
 The core service handles data persistence while the reconciliation service handles reconciliation. More information can be found under each service's readme file.
 
-## Run tests on bare metal
 
-```bash
-# unit tests
-$ yarn run test
+To run the tests for each service, you can rely on docker or run it on bare metal. The recommendation is to use docker for a unified and replicable status check across development.
 
-# e2e tests
-$ yarn run test:e2e
-
-# test coverage
-$ yarn run test:cov
-```
+>[!Note]
+> We leverage docker networks to communicate between the services
 
 ## Run tests inside Docker
+
+### Run tests inside Docker
 
 With docker-compose (uses the dev API service container):
 
@@ -46,4 +41,16 @@ docker compose -f docker-compose.local.yml run --rm flow-api yarn test:cov      
 docker compose -f docker-compose.local.yml run --rm reconciliation pytest   
 ```
 
-If your compose service name differs, swap `flow-api` for the service that builds the core app.
+
+### Run tests on bare metal
+
+```bash
+# unit tests
+$ yarn run test
+
+# e2e tests
+$ yarn run test:e2e
+
+# test coverage
+$ yarn run test:cov
+```
