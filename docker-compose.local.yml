@@ -17,6 +17,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
+    restart: on-failure
     networks:
       - flow
 
@@ -39,6 +40,7 @@ services:
     depends_on:
       db:
         condition: service_healthy
+    restart: on-failure
     networks:
       - flow
 
@@ -52,6 +54,7 @@ services:
       HOST: 0.0.0.0
     ports:
       - "8001:8000"
+    restart: on-failure
     networks:
       - flow
 

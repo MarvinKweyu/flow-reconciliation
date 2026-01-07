@@ -1,6 +1,9 @@
 
 
 ## Core service
+> The persistent layer of hte flow-reconciliation app.
+
+To run the project, access teh compose at the root of the project. After running the compose file, you can access the REST API docs via: [localhost:3000/api/docs](localhost:3000/api/docs)
 
 ## Database & Drizzle ORM
 
@@ -24,22 +27,17 @@ Push schema (apply SQL):
 ```bash
 yarn drizzle-kit push
 ```
+While REST docs are accessible ([localhost:3000/api/docs](localhost:3000/api/docs)), GraphQL can be viewed below with more examples on the file `GRAPHQL_EXAMPLES.md` in this same directory.
 
-## Tenants API
 
-- REST:
-  - `POST /tenants` – create a tenant
-  - `GET /tenants` – list all tenants
+## Tenants GraphQL API
+
 - GraphQL:
   - Query: `tenants { id name createdAt updatedAt }`
   - Mutation: `createTenant(input: { name: "Acme" }) { id name }`
 
 ## Invoices API
 
-- REST:
-  - `POST /tenants/{tenant_id}/invoices` – create an invoice
-  - `GET /tenants/{tenant_id}/invoices` – list invoices with filters
-  - `DELETE /tenants/{tenant_id}/invoices/{id}` – delete an invoice
 - GraphQL:
   - Query: `invoices(tenantId: 1, filters: { status: OPEN }, pagination: { page: 1, pageSize: 20 }) { items { id amount status } total }`
   - Mutation: `createInvoice(tenantId: 1, input: { amount: "500.00" }) { id amount }`
@@ -47,8 +45,6 @@ yarn drizzle-kit push
 
 ## Bank Transactions API
 
-- REST:
-  - `POST /tenants/{tenant_id}/bank-transactions/import` – bulk import (idempotent)
 - GraphQL:
   - Query: `bankTransactions(tenantId: 1, filters: { dateFrom: "2026-01-01" }, pagination: { page: 1 }) { items { id amount postedAt } total }`
   - Mutation: `importBankTransactions(tenantId: 1, input: { transactions: [...] }, idempotencyKey: "key") { imported skipped errors }`
@@ -193,21 +189,4 @@ curl -X POST http://localhost:3000/tenants/1/bank-transactions/import \
 
 - Set `AI_MODEL` env var to control the global model for all clients.
 - Default: `GPT-5.1-Codex-Max`.
-
-## Docker
-
-Development (hot reload):
-
-```bash
-docker compose up --build api-dev db
-```
-
-Production build and run:
-
-```bash
-docker compose up --build -d db
-docker compose up --build -d api
-```
-
-Environment defaults are in `docker-compose.yml`. Override with a `.env` file or CLI `-e` flags as needed.
 
