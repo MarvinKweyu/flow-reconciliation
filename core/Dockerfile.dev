@@ -1,0 +1,24 @@
+FROM node:22-bullseye
+
+WORKDIR /usr/src/app
+
+# Install dependencies first (leverages Docker cache)
+COPY package.json yarn.lock ./
+RUN yarn install
+
+# Copy source
+COPY . .
+RUN ls
+
+# Ensure entrypoint is executable
+RUN chmod +x docker/entrypoint.sh
+
+ENV NODE_ENV=development \
+    PORT=3000 \
+    CHOKIDAR_USEPOLLING=true \
+    WATCHPACK_POLLING=true
+
+EXPOSE 3000
+
+ENTRYPOINT ["sh", "docker/entrypoint.sh"]
+CMD ["yarn", "start:dev"]

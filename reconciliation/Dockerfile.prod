@@ -1,0 +1,42 @@
+FROM python:3.13-slim AS builder
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    g++ \
+    libpq-dev \
+    curl \
+    build-essential \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y
+ENV PATH="/root/.cargo/bin:${PATH}"
+
+COPY pyproject.toml .
+
+RUN pip wheel --no-cache-dir --wheel-dir /wheels .
+
+COPY app/ ./app/
+
+
+FROM python:3.13-slim AS runtime
+
+WORKDIR /app
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libpq-dev \
+    && rm -rf /var/lib/apt/lists/*
+
+# Create non-root user
+RUN useradd -m appuser
+USER appuser
+
+COPY --from=builder /wheels /wheels
+RUN pip install --no-cache-dir /wheels/*
+
+COPY --from=builder /app/app ./app
+
+EXPOSE 8000
+
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
