@@ -27,9 +27,6 @@ services:
       dockerfile: Dockerfile
     environment:
       NODE_ENV: production
-      PORT: 3000
-      AI_MODEL: GPT-5.1-Codex-Max
-      DATABASE_URL: postgres://postgres:postgres@db:5432/flowdb
     env_file:
       - .env
     ports:
